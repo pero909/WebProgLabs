@@ -41,7 +41,6 @@
   <br/>
     <input type="submit" value="submit">
   </form>
-  <div th:text="${session.order.getOrderId()}"></div>
 </section>
 <aside>
   <table>
@@ -52,7 +51,7 @@
     </tr>
     <tr>
       <td><b>Balloon Type </b></td>
-      <td>Red Balloon</td>
+      <td th:text="${session.order.getBaloonColor()}"></td>
     </tr>
   </table>
 </aside>
