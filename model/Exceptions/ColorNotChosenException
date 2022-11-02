@@ -1,0 +1,5 @@
+public class ColorNotChosenException extends RuntimeException{
+    public ColorNotChosenException(){
+        super("Please Choose a Color");
+    }
+}
