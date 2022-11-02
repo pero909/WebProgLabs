@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/html" >
+<head>
+    <meta charset="utf-8">
+    <title>Balloon Order page - Welcome and choose a Balloon</title>
+    <style type="text/css">
+        body {
+            width: 800px;
+            margin: auto;
+        }
+        #balloonList{
+            margin-left: 200px;
+        }
+        .error{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to our Balloon Shop App</h1>
+</header>
+<main>
+    <h2>Choose balloon color:</h2>
+    <form th:action="@{/}" th:method="POST">
+    <label >
+        <input class="balloonColor" type="radio" name="color" value="Red Balloon">
+    </label> Red Balloon<br/>
+    <label>
+        <input class="balloonColor"  type="radio" name="color" value="Green Balloon">
+    </label> Green Balloon<br/>
+    <label>
+        <input class="balloonColor"  type="radio" name="color" value="Yellow Balloon">
+    </label> Yellow Balloon<br/>
+    <label>
+        <input class="balloonColor"  type="radio" name="color" value="Blue Balloon">
+    </label> Blue Balloon<br/>
+        <input type="submit" value="submit">
+    </form>
+    <div th:if="${hasError}" class="error">
+        <div th:text="${error}"></div>
+    </div>
+
+
+    <br/>
+
+</main>
+<div id="balloonList">
+    <h3>Ballon List</h3>
+    <ul>
+        <li th:each="balloon : ${balloons}"><th:block th:text="${balloon.name}"></th:block></li>
+
+    </ul>
+
+</div>
+</body>
+</html>
