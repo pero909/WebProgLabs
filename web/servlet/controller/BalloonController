@@ -1,0 +1,96 @@
+
+import mk.finki.ukim.mk.lab.model.Balloon;
+import mk.finki.ukim.mk.lab.model.Manufacturer;
+import mk.finki.ukim.mk.lab.model.Order;
+import mk.finki.ukim.mk.lab.service.BaloonService;
+import mk.finki.ukim.mk.lab.service.ManufacturerService;
+import mk.finki.ukim.mk.lab.service.OrderService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+@Controller
+@RequestMapping("/balloons")
+public class BalloonController {
+
+    private final BaloonService baloonService;
+    private final ManufacturerService manufacturerService;
+    private final OrderService orderService;
+
+    public BalloonController(BaloonService baloonService, ManufacturerService manufacturerService, OrderService orderService) {
+        this.baloonService = baloonService;
+        this.manufacturerService = manufacturerService;
+        this.orderService = orderService;
+    }
+
+
+    @GetMapping
+    public String getBalloonPage(@RequestParam(required = false) String error,
+                              Model model){
+        List< Balloon> balloons = this.baloonService.listAll();
+        model.addAttribute("balloons",balloons);
+        return "listBalloons";
+    }
+
+    @PostMapping("/add")
+    public String saveBalloon(@RequestParam String name,
+                              @RequestParam String description,
+                              @RequestParam Long manufacturer){
+
+        Manufacturer man= manufacturerService.findById(manufacturer).get();
+        if(this.baloonService.searchByNameAndDescription(name,description).isPresent()){
+            Balloon balloon=this.baloonService.searchByNameAndDescription(name,description).get();
+            this.baloonService.save(balloon.getName(),
+                    balloon.getId(),
+                    balloon.getDescription(),
+                    balloon.getManufacturer());
+        }else{
+            this.baloonService.save(name, (long) (Math.random()*1000),description,man);
+        }
+
+
+        return "redirect:/balloons";
+    }
+    @DeleteMapping("/delete/{id}")
+    public String deleteBalloon(@PathVariable Long id){
+        this.baloonService.deleteById(id);
+        return "redirect:/balloons";
+    }
+    @GetMapping("/add-form")
+    public String getAddBalloon(Model model){
+        List<Manufacturer> manufacturers=this.manufacturerService.findAll();
+        model.addAttribute("manufacturers",manufacturers);
+        return "addBalloon";
+    }
+    @GetMapping("/edit-form/{id}")
+    public String getEditBalloonPage(@PathVariable Long id, Model model) {
+            Balloon balloon = this.baloonService.findById(id).get();
+            List<Manufacturer> manufacturers=this.manufacturerService.findAll();
+            model.addAttribute("manufacturers",manufacturers);
+            model.addAttribute("balloon",balloon);
+
+            return "addBalloon";
+
+    }
+    @PostMapping("/orders")
+    public String getOrdersPage(HttpServletRequest request,Model model){
+        List<Order> orders= this.orderService.findAll();
+        request.getSession().setAttribute("orders",orders);
+
+       return "userOrders";
+    }
+    @PostMapping("/submitOrder")
+    public String submitOrder(HttpServletRequest httpServletRequest){
+        Order order= (Order) ((HttpServletRequest) httpServletRequest)
+                .getSession().getAttribute("order");
+        this.orderService.placeOrder(order.getBaloonColor(),order.getBaloonSize(),
+                order.getClientName(),order.getClientAdress());
+        return "redirect:/balloons";
+    }
+
+
+}
