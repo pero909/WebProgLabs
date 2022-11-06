@@ -30,33 +30,39 @@
     </tr>
     <tr>
       <td ><b></b>Client Name</td>
-      <td th:text="${clientName}">Petko Petkov</td>
+      <td th:text="${session.clientName}">Petko Petkov</td>
     </tr>
     <tr>
       <td><b>Client Address </b></td>
-      <td th:text="${clientAddress}"></td>
+      <td th:text="${session.clientAddress}"></td>
     </tr>
     <tr>
       <td><b>Client IP Address</b></td>
-      <td th:text="${clientIP}"></td>
+      <td th:text="${session.clientIP}"></td>
     </tr>
     <tr>
       <td><b>Client Browser</b></td>
-      <td th:text="${clientBrowser}">Mozilla</td>
+      <td th:text="${session.clientBrowser}"></td>
     </tr>
     <tr>
       <td><b>Balloon Color </b></td>
-      <td th:text="${session.order.getBaloonColor()}"></td>
+      <td th:text="${session.balloonColor}"></td>
     </tr>
     <tr>
       <td><b>Balloon Size </b></td>
-      <td th:text="${session.order.getBaloonSize()}"></td>
+      <td th:text="${session.balloonSize}"
+      th:value="${session.balloonSize}" name="balloonSize"></td>
     </tr>
   </table>
   <div>
     <form th:method="POST" th:action="@{/ConfirmationInfo}">
       <input type="submit" value="Logout">
-
+    </form>
+    <form th:method="POST" th:action="@{/balloons/orders}">
+      <button type="submit" >See orders</button>
+    </form>
+    <form th:method="POST" th:action="@{/balloons/submitOrder}">
+      <button type="submit" >Submit Order</button>
     </form>
   </div>
 
