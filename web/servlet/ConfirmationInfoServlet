@@ -1,4 +1,5 @@
 
+
 import mk.finki.ukim.mk.lab.model.Order;
 import mk.finki.ukim.mk.lab.service.BaloonService;
 import mk.finki.ukim.mk.lab.service.OrderService;
@@ -29,11 +30,19 @@ public class ConfirmationInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext webContext =  new WebContext(req,resp, req.getServletContext());
-        Order order=(Order) req.getSession().getAttribute("order");
+
+        String clientName=(String) req.getSession().getAttribute("clientName");
+        String clientAddress=(String) req.getSession().getAttribute("clientAddress");
+        String balloonSize=(String) req.getSession().getAttribute("balloonSize");
+        String balloonColor=(String) req.getSession().getAttribute("balloonColor");
+
+        Order order= new Order(balloonColor,balloonSize,clientName,clientAddress);
+
         webContext.setVariable("clientName",order.getClientName());
         webContext.setVariable("clientAddress",order.getClientAdress());
-        webContext.setVariable("clientIP",req.getRemoteAddr());
-        webContext.setVariable("clientBrowser",req.getHeader("User-Agent"));
+        req.getSession().setAttribute("clientIP",req.getRemoteAddr());
+        req.getSession().setAttribute("clientBrowser",req.getHeader("User-Agent"));
+        req.getSession().setAttribute("order",order);
 
         springTemplateEngine.process("confirmationInfo.html",webContext,resp.getWriter());
     }
@@ -41,6 +50,6 @@ public class ConfirmationInfoServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getSession().invalidate();
-        resp.sendRedirect("");
+        resp.sendRedirect("/balloons");
     }
 }
