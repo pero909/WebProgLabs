@@ -1,6 +1,9 @@
 
 import lombok.Data;
 
+@Da
+import lombok.Data;
+
 @Data
 public class Order {
     private String baloonColor;
@@ -9,20 +12,15 @@ public class Order {
     private String clientAdress;
     private Long orderId;
 
-    public Order(String baloonColor, String baloonSize, String clientName, String clientAdress, Long orderId) {
+    public Order(String baloonColor, String baloonSize, String clientName, String clientAdress) {
         this.baloonColor = baloonColor;
         this.baloonSize = baloonSize;
         this.clientName = clientName;
         this.clientAdress = clientAdress;
-        this.orderId = orderId;
+        this.orderId = (long) (Math.random() *1000);
     }
 
-    public Order(String baloonColor, String clientName, String clientAdress) {
-        this.baloonColor = baloonColor;
-        this.clientName = clientName;
-        this.clientAdress = clientAdress;
-        this.orderId = orderId;
-    }
+
 
     public Order(String baloonColor,Long orderId) {
         this.baloonColor = baloonColor;
@@ -35,6 +33,8 @@ public class Order {
     public Order(String balloonColor) {
         this.baloonColor=balloonColor;
     }
+
+
 
     public String getBaloonColor() {
         return baloonColor;
