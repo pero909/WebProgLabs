@@ -32,9 +32,7 @@ public class SelectBalloonServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         String size= req.getParameter("size");
-        Order order=(Order) req.getSession().getAttribute("order");
-        order.setBaloonSize(size);
-        req.getSession().setAttribute("order",order);
+        req.getSession().setAttribute("balloonSize",size);
         resp.sendRedirect("/BalloonOrder.do");
     }
 }
