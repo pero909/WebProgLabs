@@ -1,4 +1,3 @@
-
 import mk.finki.ukim.mk.lab.bootstrap.DataHolder;
 import mk.finki.ukim.mk.lab.model.Exceptions.ColorNotChosenException;
 import mk.finki.ukim.mk.lab.model.Order;
@@ -7,6 +6,7 @@ import mk.finki.ukim.mk.lab.service.OrderService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -21,21 +21,27 @@ public class OrderServiceImp implements OrderService {
 
 
     @Override
-    public Order placeOrder(String balloonColor, String clientName, String address) {
-        Order order = new Order(balloonColor,clientName,address);
+    public Order placeOrder(String balloonColor,String orderSize, String clientName, String address) {
+        Order order = new Order(balloonColor,orderSize,clientName,address);
         DataHolder.orderList.add(order);
         return order;
     }
 
-    @Override
-    public Order placeOrder(String balloonColor) throws ColorNotChosenException{
-        if(balloonColor==null||balloonColor.isEmpty()){
-            throw new ColorNotChosenException();
-        }
-            Order order = new Order(balloonColor,DataHolder.OrderId++);
-            orderRepository.createOrder(order);
 
-        return order;
+    @Override
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Order> save(String balloonColor, String balloonSize,
+                                String clientName, String clientAdress, Long orderId) {
+        return orderRepository.save(balloonColor,balloonSize,clientName,clientAdress,orderId);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderRepository.findAll();
     }
 
 
