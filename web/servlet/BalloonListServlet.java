@@ -1,3 +1,5 @@
+
+import mk.finki.ukim.mk.lab.model.Balloon;
 import mk.finki.ukim.mk.lab.model.Exceptions.ColorNotChosenException;
 import mk.finki.ukim.mk.lab.model.Order;
 import mk.finki.ukim.mk.lab.service.BaloonService;
@@ -42,19 +44,8 @@ public class BalloonListServlet extends HttpServlet {
             IOException {
         String balloonColor = req.getParameter("color");
         WebContext webContext= new WebContext(req,resp, req.getServletContext());
-        Order order=null;
-        try{
-           order= orderService.placeOrder(balloonColor);
-        }catch (ColorNotChosenException ex){
-
-              webContext.setVariable("hasError",true);
-              webContext.setVariable("error",ex.getMessage());
-              springTemplateEngine.process("listBalloons.html",webContext,resp.getWriter());
-        }
-
-       // webContext.setVariable("order",order);
-        req.getSession().setAttribute("order",order);
-        resp.sendRedirect("/selectBalloon");
+           req.getSession().setAttribute("balloonColor",balloonColor);
+           resp.sendRedirect("/selectBalloon");
 
     }
 }
