@@ -74,13 +74,15 @@
                 <td th:text="${balloon.getName()}"></td>
                 <td th:text="${balloon.getDescription()}"></td>
                 <td>
-
+                <th:block sec:authorize="hasRole('ADMIN_ROLE')">
                 <form th:method="delete" th:action="@{'/balloons/delete/{id}'
                 (id=${balloon.getId()})}">
                   <button type="submit">DELETE</button>
                 </form>
+                </th:block>
+                    <th:block sec:authorize="hasRole('ADMIN_ROLE')">
                     <a th:href="@{'/balloons/edit-form/{id}' (id=${balloon.getId()})}" class="add-btn">Edit Balloon</a>
-
+                    </th:block>
 
                 </td>
             </tr>
@@ -88,7 +90,6 @@
     </table>
 
     <a href="/balloons/add-form" class="add-btn">Add Balloon</a>
-
 
 </div>
 </body>

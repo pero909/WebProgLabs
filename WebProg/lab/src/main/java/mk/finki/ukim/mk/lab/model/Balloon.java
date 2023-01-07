@@ -7,7 +7,8 @@ import javax.persistence.*;
 @Data
 @Entity
 public class Balloon {
-    public Balloon(String name, String description, String balloonColor, String balloonSize, Manufacturer manufacturer) {
+    public Balloon(String name, String description
+            , String balloonColor, String balloonSize, Manufacturer manufacturer) {
         this.name = name;
         this.description = description;
         this.balloonColor = balloonColor;
